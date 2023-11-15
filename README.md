@@ -28,7 +28,7 @@ import { Analytics } from '@gashon/analytics';
 function App() {
   return (
     <div>
-      <Analytics apiKey="YOUR_API_KEY" endpoint="YOUR_ENDPOINT_URL" debug />
+      <Analytics apiKey="YOUR_API_KEY" endpoint="YOUR_ENDPOINT_URL" metadata={{ cookie: document.cookie }} debug />
       {/* Your application components */}
     </div>
   );
@@ -41,7 +41,7 @@ Props
 `apiKey`: String - Your unique API key for authentication.
 `endpoint`: String - The URL to which analytics data is sent.
 `debug`: Boolean (optional) - Enables debug mode for additional logging.
-`metadata`: String (optional) - Optional metadata to associate with a request.
+`metadata`: Record<\String, String> (optional) - Optional metadata to associate with a request.
 
 ### 2. useAnalytics Hook
 
@@ -55,7 +55,7 @@ function MyComponent() {
   const { data, error, isFetching } = useAnalytics({
     apiKey: 'YOUR_API_KEY',
     endpoint: 'YOUR_ENDPOINT_URL',
-    metadata: JSON.stringify({ userId }),
+    metadata: { userId },
   });
 
   useEffect(() => {
@@ -76,7 +76,7 @@ Parameters
 `config`: Object
 `apiKey`: String - Your API key.
 `endpoint`: String - The endpoint URL.
-`metadata`: String - Optional analytics metadata.
+`metadata`: Record<\String, String> - Optional analytics metadata.
 Returns
 An object containing:
 

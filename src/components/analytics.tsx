@@ -6,7 +6,7 @@ export interface AnalyticsProps {
   apiKey: string;
   endpoint: string;
   debug?: boolean;
-  metadata?: string;
+  metadata?: Record<string, string>;
 }
 
 export const Analytics: React.FC<AnalyticsProps> = ({ apiKey, endpoint, metadata, debug = false }) => {
