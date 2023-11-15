@@ -37,11 +37,11 @@ function App() {
 export default App;
 ```
 
-Props
-`apiKey`: String - Your unique API key for authentication.
-`endpoint`: String - The URL to which analytics data is sent.
-`debug`: Boolean (optional) - Enables debug mode for additional logging.
-`metadata`: Record<\String, String> (optional) - Optional metadata to associate with a request.
+Props  
+`apiKey`: String - Your unique API key for authentication.  
+`endpoint`: String - The URL to which analytics data is sent.  
+`debug`: Boolean (optional) - Enables debug mode for additional logging.  
+`metadata`: Record<\String, String> (optional) - Optional metadata to associate with a request.  
 
 ### 2. useAnalytics Hook
 
@@ -72,17 +72,17 @@ export default MyComponent;
 
 `useAnalytics<T>(config: FetchData): UseAnalytics<T>`
 
-Parameters
-`config`: Object
-`apiKey`: String - Your API key.
-`endpoint`: String - The endpoint URL.
-`metadata`: Record<\String, String> - Optional analytics metadata.
-Returns
-An object containing:
+Parameters  
+`config`: Object  
+`apiKey`: String - Your API key.  
+`endpoint`: String - The endpoint URL.  
+`metadata`: Record<String, String> - Optional analytics metadata.  
+Returns  
+An object containing:  
 
 `data`: T | null - The response data.  
 `error`: Error | null - Any error encountered during the request.  
-`isFetching`: boolean - Indicates if the request is in progress.
+`isFetching`: boolean - Indicates if the request is in progress.  
 
 License  
-This project is licensed under the MIT License.
+This project is licensed under the MIT License.  
