@@ -1,4 +1,4 @@
-## @gashon/analytics
+## [@gashon/analytics](https://www.npmjs.com/package/@gashon/analytics)
 
 A React-based analytics tool for easy integration and tracking of analytics data in React applications.
 
