@@ -38,9 +38,9 @@ export default App;
 ```
 
 Props
-`apiKey`: String - Your unique API key for authentication.
-`endpoint`: String - The URL to which analytics data is sent.
-`debug`: Boolean (optional) - Enables debug mode for additional logging.
+`apiKey`: String - Your unique API key for authentication. 
+`endpoint`: String - The URL to which analytics data is sent. 
+`debug`: Boolean (optional) - Enables debug mode for additional logging. 
 
 ### 2. useAnalytics Hook
 
@@ -70,16 +70,16 @@ export default MyComponent;
 
 `useAnalytics<T>(config: FetchData): UseAnalytics<T>`
 
-Parameters
-`config`: Object
-`apiKey`: String - Your API key.
-`endpoint`: String - The endpoint URL.
-Returns
-An object containing:
+Parameters 
+`config`: Object 
+`apiKey`: String - Your API key. 
+`endpoint`: String - The endpoint URL. 
+Returns 
+An object containing: 
 
-`data`: T | null - The response data.
-`error`: Error | null - Any error encountered during the request.
-`isFetching`: boolean - Indicates if the request is in progress.
+`data`: T | null - The response data. 
+`error`: Error | null - Any error encountered during the request. 
+`isFetching`: boolean - Indicates if the request is in progress. 
 
-License
+License 
 This project is licensed under the MIT License.
