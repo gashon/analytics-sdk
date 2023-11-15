@@ -9,12 +9,13 @@ export type UseAnalytics<T> = {
   data: T | null;
 };
 
-export type FetchData = Pick<AnalyticsProps, 'apiKey' | 'endpoint'>;
+export type FetchData = Pick<AnalyticsProps, 'apiKey' | 'endpoint' | 'metadata'>;
 
-const fetchData = async ({ apiKey, endpoint }: FetchData) => {
+const fetchData = async ({ apiKey, endpoint, metadata }: FetchData) => {
   const data = {
     api_key: apiKey,
     request_id: uuidv4(),
+    metadata,
   };
 
   const res = await fetch(endpoint, {
@@ -29,7 +30,7 @@ const fetchData = async ({ apiKey, endpoint }: FetchData) => {
   return response;
 };
 
-export const useAnalytics = <T>({ apiKey, endpoint }: FetchData): UseAnalytics<T> => {
+export const useAnalytics = <T>({ apiKey, endpoint, metadata }: FetchData): UseAnalytics<T> => {
   const [error, setError] = useState<UseAnalytics<T>['error']>(null);
   const [isFetching, setFetching] = useState<UseAnalytics<T>['isFetching']>(false);
   const [data, setData] = useState<UseAnalytics<T>['data']>(null);
@@ -38,7 +39,7 @@ export const useAnalytics = <T>({ apiKey, endpoint }: FetchData): UseAnalytics<T
     if (!!apiKey && !!endpoint) {
       setFetching(true);
 
-      fetchData({ apiKey, endpoint })
+      fetchData({ apiKey, endpoint, metadata })
         .then((data) => {
           setData(data);
         })
