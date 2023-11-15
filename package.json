@@ -1,7 +1,7 @@
 {
-  "name": "ts-npm-package-boilerplate",
+  "name": "@gashon/analytics",
   "version": "0.2.4",
-  "description": "TypeScript NPM Module Boilerplate",
+  "description": "Analytics Component",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -18,20 +18,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hebertcisco/ts-npm-package-boilerplate.git"
+    "url": "git+https://github.com/gashon/analytics-sdk.git"
   },
   "keywords": [
-    "boilerplate",
+    "analytics",
+    "react",
     "typescript"
   ],
-  "author": "Hebert Cisco",
+  "author": "Gashon Hussein",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hebertcisco/ts-npm-package-boilerplate/issues"
+    "url": "https://github.com/gashon/analytics-sdk/issues"
   },
-  "homepage": "https://github.com/hebertcisco/ts-npm-package-boilerplate#readme",
+  "homepage": "https://github.com/gashon/analytics-sdk#readme",
   "devDependencies": {
     "@types/jest": "29.4.0",
+    "@types/react": "^18.2.37",
+    "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.52.0",
     "eslint": "8.35.0",
@@ -43,5 +46,10 @@
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.1"
+  }
 }
