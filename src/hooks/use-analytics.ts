@@ -23,6 +23,7 @@ const fetchData = async ({ apiKey, endpoint, metadata }: FetchData) => {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(data),
   });
 
