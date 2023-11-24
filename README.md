@@ -96,5 +96,9 @@ An object containing:
 `error`: Error | null - Any error encountered during the request.  
 `isFetching`: boolean - Indicates if the request is in progress.
 
+#### Additional Notes
+
+Additional header information is prefixed with `x-` and can be used to identify requests from the analytics tool. For example, the `x-path-name` header can be used to identify the page from which the request originated.
+
 License  
 This project is licensed under the MIT License.

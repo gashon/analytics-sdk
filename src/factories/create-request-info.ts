@@ -11,6 +11,7 @@ export const createRequestInfo = ({
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
+    'x-path-name': window.location.pathname,
   },
   credentials: trackSession ? 'include' : 'omit',
   body: JSON.stringify(payload),
