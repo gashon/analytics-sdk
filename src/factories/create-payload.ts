@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { omitUndefined } from 'omit-undefined';
 import fp from '@fingerprintjs/fingerprintjs';
+import checksum from 'checksum';
 
 import { FetchData } from '../hooks';
 
@@ -12,7 +13,7 @@ export type RequestPayload = {
 
 export const createPayload = async (
   options: Pick<FetchData, 'metadata' | 'fingerprintBrowser'>,
-): Promise<RequestPayload> => {
+): Promise<{ payload: RequestPayload; checksum: string }> => {
   let fingerPrintId: string | undefined = undefined;
 
   if (options.fingerprintBrowser) {
@@ -22,11 +23,12 @@ export const createPayload = async (
     fingerPrintId = visitorId;
   }
 
-  const payload = {
+  const payload = omitUndefined({
     metadata: options.metadata,
     request_id: uuidv4(),
     fingerprint_id: fingerPrintId,
-  };
+  });
 
-  return omitUndefined(payload);
+  const hash = checksum(JSON.stringify(payload));
+  return { payload, checksum: hash };
 };

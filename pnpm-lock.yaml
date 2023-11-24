@@ -8,6 +8,12 @@ dependencies:
   '@fingerprintjs/fingerprintjs':
     specifier: ^4.2.1
     version: 4.2.1
+  '@types/checksum':
+    specifier: ^0.1.35
+    version: 0.1.35
+  checksum:
+    specifier: ^1.0.0
+    version: 1.0.0
   omit-undefined:
     specifier: ^1.0.1
     version: 1.0.1
@@ -784,6 +790,10 @@ packages:
       '@babel/types': 7.23.4
     dev: true
 
+  /@types/checksum@0.1.35:
+    resolution: {integrity: sha512-Tm3eaZOW4viqdSPa1Y3HFJBqzmTqgChTfeFqBV8Xyevvf3IIG5Uo8WOHFRLhdUTADnz5waK7KC11V+tBfXnqkw==}
+    dev: false
+
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
@@ -1330,6 +1340,13 @@ packages:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
     dev: true
+
+  /checksum@1.0.0:
+    resolution: {integrity: sha512-68bHejnM/sBQhjXcXd2mFusICnqAwikZ9RVMURIacWh7moNjgOdHKimS6yk30Np/PwfR00dceY4b1GwWanu5cg==}
+    hasBin: true
+    dependencies:
+      optimist: 0.3.7
+    dev: false
 
   /ci-info@3.9.0:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
@@ -2663,6 +2680,12 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
+  /optimist@0.3.7:
+    resolution: {integrity: sha512-TCx0dXQzVtSCg2OgY/bO9hjM9cV4XYx09TVK+s3+FhkjT6LovsLe+pPMzpWf+6yXK/hUizs2gUoTw3jHM0VaTQ==}
+    dependencies:
+      wordwrap: 0.0.3
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -3180,6 +3203,11 @@ packages:
     dependencies:
       isexe: 2.0.0
     dev: true
+
+  /wordwrap@0.0.3:
+    resolution: {integrity: sha512-1tMA907+V4QmxV7dbRvb4/8MaRALK6q9Abid3ndMYnbyo8piisCmeONVqVSXqQA3KaP4SLt5b7ud6E2sqP8TFw==}
+    engines: {node: '>=0.4.0'}
+    dev: false
 
   /wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
