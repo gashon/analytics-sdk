@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { omitUndefined } from 'omit-undefined';
 import fp from '@fingerprintjs/fingerprintjs';
-import checksum from 'checksum';
+import sha1 from 'sha1';
 
 import { FetchData } from '../hooks';
 
@@ -29,6 +29,6 @@ export const createPayload = async (
     fingerprint_id: fingerPrintId,
   });
 
-  const hash = checksum(JSON.stringify(payload));
+  const hash = sha1(JSON.stringify(payload));
   return { payload, checksum: hash };
 };

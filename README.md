@@ -104,7 +104,7 @@ Additional header information is prefixed with `x-` and can be used to identify 
 
 - `x-path-name`: `window.location.pathname` (path of the viewed page)
 - `x-api-key`: apiKey param
-- `x-checksum`: A sha1 hash of the request payload (JSON.stringy(payload)) for simple bot aversion.
+- `x-checksum`: A sha1 hash of the request payload (JSON.stringy(payload)) for simple bot mitigation.
 
 License  
 This project is licensed under the MIT License.
