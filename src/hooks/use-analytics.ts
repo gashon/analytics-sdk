@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { omitUndefined } from 'omit-undefined';
-import fp from '@fingerprintjs/fingerprintjs';
 
+import { createPayload, createRequestInfo } from '../factories';
 import { AnalyticsProps } from '../components';
 
 export type UseAnalytics<T> = {
@@ -15,50 +13,6 @@ export type FetchData = Pick<AnalyticsProps, 'apiKey' | 'endpoint' | 'metadata'>
   trackSession?: boolean;
   fingerprintBrowser?: boolean;
 };
-
-export type RequestPayload = {
-  api_key: FetchData['apiKey'];
-  metadata: FetchData['metadata'];
-  request_id: string;
-  fingerprint_id?: string;
-};
-
-const createPayload = async (
-  options: Pick<FetchData, 'apiKey' | 'metadata' | 'fingerprintBrowser'>,
-): Promise<RequestPayload> => {
-  let fingerPrintId: string | undefined = undefined;
-
-  if (options.fingerprintBrowser) {
-    const fpPromise = await fp.load();
-    const { visitorId } = await fpPromise.get();
-
-    fingerPrintId = visitorId;
-  }
-
-  const payload = {
-    api_key: options.apiKey,
-    metadata: options.metadata,
-    request_id: uuidv4(),
-    fingerprint_id: fingerPrintId,
-  };
-
-  return omitUndefined(payload);
-};
-
-const createRequestInfo = ({
-  payload,
-  trackSession,
-}: {
-  payload: RequestPayload;
-  trackSession: FetchData['trackSession'];
-}): RequestInit => ({
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  credentials: trackSession ? 'include' : 'omit',
-  body: JSON.stringify(payload),
-});
 
 const fetchData = async ({ apiKey, endpoint, metadata, trackSession, fingerprintBrowser }: FetchData) => {
   const payload = await createPayload({ apiKey, metadata, fingerprintBrowser });
