@@ -15,8 +15,8 @@ export type FetchData = Pick<AnalyticsProps, 'apiKey' | 'endpoint' | 'metadata'>
 };
 
 const fetchData = async ({ apiKey, endpoint, metadata, trackSession, fingerprintBrowser }: FetchData) => {
-  const payload = await createPayload({ apiKey, metadata, fingerprintBrowser });
-  const options = createRequestInfo({ payload, trackSession });
+  const payload = await createPayload({ metadata, fingerprintBrowser });
+  const options = createRequestInfo({ payload, trackSession, apiKey });
 
   const res = await fetch(endpoint, options);
 
