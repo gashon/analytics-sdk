@@ -6,9 +6,7 @@ import { FetchData } from '../hooks';
 
 export const createPageLeavePayload = ({
   sessionId,
-  apiKey,
 }: {
-  apiKey: FetchData['apiKey'];
   sessionId: FetchData['sessionId'];
 }): { payload: PageLeavePayload; checksum: string } => {
   const payload: PageLeavePayload = {
@@ -16,7 +14,6 @@ export const createPageLeavePayload = ({
     event: EVENTS.LEAVE,
     timestamp: new Date().getTime(),
     session_id: sessionId,
-    api_key: apiKey,
   };
 
   const checksum = sha1(JSON.stringify(payload));

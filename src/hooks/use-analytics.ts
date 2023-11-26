@@ -42,7 +42,7 @@ const fetchPageVisit = async ({
 };
 
 const fetchPageLeave = async ({ apiKey, endpoint, trackSession, sessionId }: FetchData) => {
-  const { payload, checksum } = createPageLeavePayload({ sessionId, apiKey });
+  const { payload, checksum } = createPageLeavePayload({ sessionId });
 
   return sendBeacon({ endpoint, payload, trackSession, apiKey, checksum });
 };

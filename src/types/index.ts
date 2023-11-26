@@ -40,7 +40,6 @@ export type PageLeavePayload = {
   request_id: string;
   timestamp: number;
   session_id: string;
-  api_key: FetchData['apiKey'];
 };
 
 export type RequestPayload = ClickEventPayload | PageVisitPayload | PageLeavePayload;

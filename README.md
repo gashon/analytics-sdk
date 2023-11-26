@@ -83,7 +83,7 @@ export default MyComponent;
 
 ### Click Event Tracking
 
-To enable click event tracking, set trackClickEvents to true in your Analytics component or useAnalytics hook. Attach a `data-tracking-label` attribute to any HTML element you wish to track. When the element is clicked, a payload containing the label and additional click data is sent to your specified endpoint.
+To enable click event tracking, set `trackClickEvents ` to true in your `Analytics` component or `useAnalytics` hook. Attach a `data-tracking-label` attribute to any HTML element you wish to track. When the element is clicked, a payload containing the label and additional click data is sent to your specified endpoint.
 
 ### API
 
@@ -104,15 +104,44 @@ An object containing:
 `error`: Error | null - Any error encountered during the request.  
 `isFetching`: boolean - Indicates if the request is in progress.
 
-### Custom Headers
+### Event Payloads
 
-Additional header information is prefixed with `x-` and can be used to identify requests from the analytics tool.
+```ts
+type RequestData = {
+  payload: RequestPayload;
+  checksum: string;
+  path: string;
+  api_key: AnalyticsProps['apiKey'];
+};
 
-#### Supported Headers
+type ClickEventPayload = {
+  event: EVENTS.CLICK;
+  request_id: string;
+  metadata: Record<String, String>;
+  window: {
+    width: number;
+    height: number;
+  };
+  element_rect: ElementRect;
+  tag: string;
+  session_id: string;
+};
 
-- `x-path-name`: `window.location.pathname` (path of the viewed page)
-- `x-api-key`: apiKey param
-- `x-checksum`: A sha1 hash of the request payload (JSON.stringy(payload)) for simple bot mitigation.
+type PageVisitPayload = {
+  event: EVENTS.VISIT;
+  metadata: Record<String, String>;
+  request_id: string;
+  session_id: string;
+  fingerprint_id?: string;
+};
+
+type PageLeavePayload = {
+  event: EVENTS.LEAVE;
+  request_id: string;
+  timestamp: number;
+  session_id: string;
+};
+```
 
 License  
 This project is licensed under the MIT License.
