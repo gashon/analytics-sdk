@@ -1,4 +1,11 @@
 import { FetchData } from '../hooks';
+import { AnalyticsProps } from '../components';
+
+export enum EVENTS {
+  CLICK = 'click',
+  VISIT = 'visit',
+  LEAVE = 'leave',
+}
 
 export type ElementRect = {
   top: number;
@@ -8,7 +15,7 @@ export type ElementRect = {
 };
 
 export type ClickEventPayload = {
-  event: 'click';
+  event: EVENTS.CLICK;
   request_id: string;
   metadata: FetchData['metadata'];
   window: {
@@ -17,13 +24,35 @@ export type ClickEventPayload = {
   };
   element_rect: ElementRect;
   tag: string;
+  session_id: string;
 };
 
 export type PageVisitPayload = {
-  event: 'visit';
+  event: EVENTS.VISIT;
   metadata: FetchData['metadata'];
   request_id: string;
   fingerprint_id?: string;
+  session_id: string;
 };
 
-export type RequestPayload = ClickEventPayload | PageVisitPayload;
+export type PageLeavePayload = {
+  event: EVENTS.LEAVE;
+  request_id: string;
+  timestamp: number;
+  session_id: string;
+  api_key: FetchData['apiKey'];
+};
+
+export type RequestPayload = ClickEventPayload | PageVisitPayload | PageLeavePayload;
+
+export type RequestData = {
+  payload: RequestPayload;
+  checksum: string;
+  path: string;
+  api_key: AnalyticsProps['apiKey'];
+};
+
+export type RequestDataInit = Omit<RequestData, 'path' | 'api_key'> & {
+  apiKey: RequestData['api_key'];
+  trackSession: AnalyticsProps['trackSession'];
+};

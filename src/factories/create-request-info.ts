@@ -6,11 +6,13 @@ export const createRequestInfo = ({
   trackSession,
   apiKey,
   checksum,
+  options = {},
 }: {
   payload: RequestPayload;
   trackSession: FetchData['trackSession'];
   apiKey: FetchData['apiKey'];
   checksum: string;
+  options?: RequestInit;
 }): RequestInit => ({
   method: 'POST',
   headers: {
@@ -21,4 +23,5 @@ export const createRequestInfo = ({
   },
   credentials: trackSession ? 'include' : 'omit',
   body: JSON.stringify(payload),
+  ...options,
 });

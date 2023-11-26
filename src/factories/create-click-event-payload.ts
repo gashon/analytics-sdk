@@ -1,7 +1,7 @@
 import sha1 from 'sha1';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ElementRect, ClickEventPayload } from '../types';
+import { ElementRect, EVENTS, ClickEventPayload } from '../types';
 import { FetchData } from '../hooks';
 
 /**
@@ -12,9 +12,11 @@ import { FetchData } from '../hooks';
 export function createClickEventPayload({
   element,
   metadata,
+  sessionId,
 }: {
   element: HTMLElement;
   metadata: FetchData['metadata'];
+  sessionId: FetchData['sessionId'];
 }): {
   payload: ClickEventPayload;
   checksum: string;
@@ -29,7 +31,7 @@ export function createClickEventPayload({
 
   const payload: ClickEventPayload = {
     metadata,
-    event: 'click',
+    event: EVENTS.CLICK,
     element_rect: elementRect,
     tag: element.dataset.trackingLabel!,
     window: {
@@ -37,6 +39,7 @@ export function createClickEventPayload({
       height: window.innerHeight,
     },
     request_id: uuidv4(),
+    session_id: sessionId,
   };
 
   const checksum = sha1(JSON.stringify(payload));
