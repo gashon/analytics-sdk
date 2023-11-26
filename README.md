@@ -50,6 +50,7 @@ Props
 `endpoint`: String - The URL to which analytics data is sent.  
 `debug`: Boolean (optional) - Enables debug mode for additional logging.  
 `metadata`: Record<\String, String> (optional) - Optional metadata to associate with a request. \
+`trackClickEvents`: Boolean (default false) - Enables click event tracking. \
 `trackSession`: Boolean (default true) - Enables session tracking.\
 `fingerprintBrowser`: Boolean (default true) - Enables browser fingerprinting for unique user identification.
 
