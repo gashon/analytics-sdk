@@ -31,7 +31,7 @@ export function createClickEventPayload({
     metadata,
     event: 'click',
     element_rect: elementRect,
-    tag: element.dataset.trackingId!,
+    tag: element.dataset.trackingLabel!,
     window: {
       width: window.innerWidth,
       height: window.innerHeight,
