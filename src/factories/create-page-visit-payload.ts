@@ -4,16 +4,11 @@ import fp from '@fingerprintjs/fingerprintjs';
 import sha1 from 'sha1';
 
 import { FetchData } from '../hooks';
+import { PageVisitPayload } from '../types';
 
-export type RequestPayload = {
-  metadata: FetchData['metadata'];
-  request_id: string;
-  fingerprint_id?: string;
-};
-
-export const createPayload = async (
+export const createPageVisitPayload = async (
   options: Pick<FetchData, 'metadata' | 'fingerprintBrowser'>,
-): Promise<{ payload: RequestPayload; checksum: string }> => {
+): Promise<{ payload: PageVisitPayload; checksum: string }> => {
   let fingerPrintId: string | undefined = undefined;
 
   if (options.fingerprintBrowser) {
@@ -23,7 +18,8 @@ export const createPayload = async (
     fingerPrintId = visitorId;
   }
 
-  const payload = omitUndefined({
+  const payload: PageVisitPayload = omitUndefined({
+    event: 'visit',
     metadata: options.metadata,
     request_id: uuidv4(),
     fingerprint_id: fingerPrintId,

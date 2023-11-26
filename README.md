@@ -35,6 +35,7 @@ function App() {
         debug
         trackSession
         fingerprintBrowser
+        trackClickEvents
       />
       {/* Your application components */}
     </div>
@@ -65,6 +66,7 @@ function MyComponent() {
     apiKey: 'YOUR_API_KEY',
     endpoint: 'YOUR_ENDPOINT_URL',
     metadata: { userId },
+    trackClickEvents: true,
     fingerprintBrowser: false,
   });
 
@@ -78,6 +80,10 @@ function MyComponent() {
 export default MyComponent;
 ```
 
+### Click Event Tracking
+
+To enable click event tracking, set trackClickEvents to true in your Analytics component or useAnalytics hook. Attach a `data-tracking-label` attribute to any HTML element you wish to track. When the element is clicked, a payload containing the label and additional click data is sent to your specified endpoint.
+
 ### API
 
 `useAnalytics<T>(config: FetchData): UseAnalytics<T>`
@@ -88,6 +94,7 @@ Parameters
 `endpoint`: String - The endpoint URL.  
 `metadata`: Record<String, String> - Optional analytics metadata.  
 `trackSession`: Boolean (default true) - Enables session tracking. \
+`trackClickEvents`: Boolean (default false) - Enables click event tracking. \
 `fingerprintBrowser`: Boolean (default true) - Enables browser fingerprinting. \
 Returns  
 An object containing:

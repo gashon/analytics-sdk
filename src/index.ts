@@ -1,4 +1,4 @@
-import { RequestPayload } from './factories';
+import { RequestPayload } from './types';
 
 export * from './components';
 export * from './hooks';

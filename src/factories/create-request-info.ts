@@ -1,5 +1,5 @@
 import { FetchData } from '../hooks';
-import { RequestPayload } from './';
+import { RequestPayload } from '../types';
 
 export const createRequestInfo = ({
   payload,
