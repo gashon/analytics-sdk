@@ -31,6 +31,7 @@ export const createRequestInfo = ({
       'x-api-key': apiKey,
       'x-checksum': checksum,
     },
+    mode: 'cors',
     keepalive: true,
     // @deprecated
     credentials: trackSession ? 'include' : 'omit',
