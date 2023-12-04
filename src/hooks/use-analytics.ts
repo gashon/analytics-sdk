@@ -66,7 +66,8 @@ const fetchPageVisit = async ({
 const fetchPageLeave = async ({ apiKey, endpoint, trackSession, sessionId }: FetchData) => {
   const { payload, checksum } = createPageLeavePayload({ sessionId });
 
-  return sendBeacon({ endpoint, payload, trackSession, apiKey, checksum });
+  sendRequest({ endpoint, payload, trackSession, apiKey, checksum });
+  return true;
 };
 
 const fetchClickEvent = async ({
@@ -79,7 +80,8 @@ const fetchClickEvent = async ({
 }: FetchData & { element: HTMLElement }) => {
   const { payload, checksum } = createClickEventPayload({ sessionId, element, metadata });
 
-  return sendBeacon({ endpoint, payload, trackSession, apiKey, checksum });
+  sendRequest({ endpoint, payload, trackSession, apiKey, checksum });
+  return true;
 };
 
 export const useAnalytics = <TResponse>({
