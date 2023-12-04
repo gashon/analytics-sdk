@@ -34,7 +34,7 @@ export const createRequestInfo = ({
     mode: 'cors',
     keepalive: true,
     // @deprecated
-    credentials: trackSession ? 'include' : 'omit',
+    credentials: 'omit',
     body: JSON.stringify(data),
     ...options,
   };
