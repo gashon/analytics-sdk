@@ -111,11 +111,12 @@ type RequestData = {
   payload: RequestPayload;
   checksum: string;
   path: string;
+  user_id: string | null;
   api_key: AnalyticsProps['apiKey'];
 };
 
 type ClickEventPayload = {
-  event: EVENTS.CLICK;
+  event: 'click';
   request_id: string;
   metadata: Record<String, String>;
   window: {
@@ -128,7 +129,7 @@ type ClickEventPayload = {
 };
 
 type PageVisitPayload = {
-  event: EVENTS.VISIT;
+  event: 'visit';
   metadata: Record<String, String>;
   request_id: string;
   session_id: string;
@@ -136,7 +137,7 @@ type PageVisitPayload = {
 };
 
 type PageLeavePayload = {
-  event: EVENTS.LEAVE;
+  event: 'leave';
   request_id: string;
   timestamp: number;
   session_id: string;

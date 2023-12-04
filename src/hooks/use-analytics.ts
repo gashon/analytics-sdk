@@ -5,7 +5,8 @@ import { createClickEventPayload, createPageVisitPayload, createRequestBlob, cre
 import { AnalyticsProps } from '../components';
 import { findTrackedElement } from '../util';
 import { createPageLeavePayload } from '../factories/create-page-leave-payload';
-import { RequestData, RequestDataInit } from '../types';
+import { PageVisitExpectedResponse, RequestData, RequestDataInit } from '../types';
+import { STORAGE_USER_IDENTIFIER } from '../consts';
 
 export type UseAnalytics<T> = {
   error: Error | null;
@@ -28,6 +29,19 @@ const sendBeacon = async ({
   return res;
 };
 
+const sendRequest = async <T>({
+  endpoint,
+  payload,
+  checksum,
+  apiKey,
+  trackSession,
+}: RequestDataInit & { endpoint: AnalyticsProps['endpoint'] }): Promise<T> => {
+  const options = createRequestInfo({ payload, trackSession, apiKey, checksum });
+
+  const res = await fetch(endpoint, options);
+  return res.json();
+};
+
 const fetchPageVisit = async ({
   apiKey,
   endpoint,
@@ -38,7 +52,15 @@ const fetchPageVisit = async ({
 }: FetchData) => {
   const { payload, checksum } = await createPageVisitPayload({ metadata, fingerprintBrowser, sessionId });
 
-  return sendBeacon({ endpoint, payload, trackSession, apiKey, checksum });
+  const {
+    data: { token },
+  } = await sendRequest<PageVisitExpectedResponse>({ endpoint, payload, trackSession, apiKey, checksum });
+
+  if (token) {
+    localStorage.setItem(STORAGE_USER_IDENTIFIER, token);
+  }
+
+  return true;
 };
 
 const fetchPageLeave = async ({ apiKey, endpoint, trackSession, sessionId }: FetchData) => {

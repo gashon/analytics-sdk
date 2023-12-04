@@ -8,6 +8,9 @@ dependencies:
   '@fingerprintjs/fingerprintjs':
     specifier: ^4.2.1
     version: 4.2.1
+  '@gashon/analytics':
+    specifier: ^1.7.0
+    version: 1.7.0
   '@types/sha1':
     specifier: ^1.1.5
     version: 1.1.5
@@ -442,6 +445,18 @@ packages:
     resolution: {integrity: sha512-uW+GVUNTgCXbVPEbgnbf5Aor22e1dyYR0JRwdUiZBaikfxr7KlhV9y0aahA1FB99fEeQVvhCEvTcPIFSYTy9Pw==}
     dependencies:
       tslib: 2.6.2
+    dev: false
+
+  /@gashon/analytics@1.7.0:
+    resolution: {integrity: sha512-RjvHJBLTMdQjG6ox4yVtXBnx4qSBV8Da9FXEyXfTrXkb7obsnOcheBpoEcjp3+j9je8JHQILlcpd0nEAkr7sEA==}
+    dependencies:
+      '@fingerprintjs/fingerprintjs': 4.2.1
+      '@types/sha1': 1.1.5
+      omit-undefined: 1.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      sha1: 1.1.1
+      uuid: 9.0.1
     dev: false
 
   /@humanwhocodes/config-array@0.11.13:

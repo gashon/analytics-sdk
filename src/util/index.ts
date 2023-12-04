@@ -1,3 +1,5 @@
+import { STORAGE_USER_IDENTIFIER } from '../consts';
+
 // recuresively search for html element with data-tracking-label attribute
 export const findTrackedElement = (element: HTMLElement | null): { element: HTMLElement | undefined } => {
   const MAX_DEPTH = 5;
@@ -15,3 +17,5 @@ export const findTrackedElement = (element: HTMLElement | null): { element: HTML
 
   return { element: undefined };
 };
+
+export const getUserToken = () => localStorage.getItem(STORAGE_USER_IDENTIFIER);

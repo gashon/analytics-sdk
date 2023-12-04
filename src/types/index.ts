@@ -48,10 +48,19 @@ export type RequestData = {
   payload: RequestPayload;
   checksum: string;
   path: string;
+  token: string | null;
   api_key: AnalyticsProps['apiKey'];
 };
 
-export type RequestDataInit = Omit<RequestData, 'path' | 'api_key'> & {
+export type RequestDataInit = Omit<RequestData, 'token' | 'path' | 'api_key'> & {
   apiKey: RequestData['api_key'];
   trackSession: AnalyticsProps['trackSession'];
 };
+
+type Response<T> = {
+  data: T;
+};
+
+export type PageVisitExpectedResponse = Response<{
+  token: string | undefined | null;
+}>;

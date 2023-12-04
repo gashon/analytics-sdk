@@ -1,5 +1,6 @@
 import { FetchData } from '../hooks';
-import { RequestPayload } from '../types';
+import { RequestData, RequestPayload } from '../types';
+import { getUserToken } from '../util';
 
 export const createRequestInfo = ({
   payload,
@@ -13,15 +14,27 @@ export const createRequestInfo = ({
   apiKey: FetchData['apiKey'];
   checksum: string;
   options?: RequestInit;
-}): RequestInit => ({
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-path-name': window.location.pathname,
-    'x-api-key': apiKey,
-    'x-checksum': checksum,
-  },
-  credentials: trackSession ? 'include' : 'omit',
-  body: JSON.stringify(payload),
-  ...options,
-});
+}): RequestInit => {
+  const data: RequestData = {
+    payload,
+    checksum,
+    path: window.location.pathname,
+    api_key: apiKey,
+    token: getUserToken(),
+  };
+
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-path-name': window.location.pathname,
+      'x-api-key': apiKey,
+      'x-checksum': checksum,
+    },
+    keepalive: true,
+    // @deprecated
+    credentials: trackSession ? 'include' : 'omit',
+    body: JSON.stringify(data),
+    ...options,
+  };
+};

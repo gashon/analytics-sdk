@@ -1,6 +1,6 @@
 {
   "name": "@gashon/analytics",
-  "version": "1.6.7",
+  "version": "1.7.1",
   "description": "Analytics Component",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -52,6 +52,7 @@
   ],
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^4.2.1",
+    "@gashon/analytics": "^1.7.0",
     "@types/sha1": "^1.1.5",
     "omit-undefined": "^1.0.1",
     "react": "^18.2.0",
