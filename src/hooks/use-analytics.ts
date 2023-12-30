@@ -91,6 +91,7 @@ export const useAnalytics = <TResponse>({
   trackClickEvents = false,
   trackSession = true,
   fingerprintBrowser = true,
+  disableOnDev,
 }: Omit<FetchData, 'sessionId'>): UseAnalytics<TResponse> => {
   const [error, setError] = useState<UseAnalytics<TResponse>['error']>(null);
   const [isFetching, setFetching] = useState<UseAnalytics<TResponse>['isFetching']>(false);
@@ -99,6 +100,8 @@ export const useAnalytics = <TResponse>({
 
   // page visit
   useEffect(() => {
+    if (disableOnDev && process.env.NODE_ENV === 'development') return;
+
     setFetching(true);
 
     fetchPageVisit({ apiKey, endpoint, metadata, trackSession, fingerprintBrowser, sessionId })
@@ -111,11 +114,11 @@ export const useAnalytics = <TResponse>({
       .finally(() => {
         setFetching(false);
       });
-  }, [apiKey, endpoint]);
+  }, [apiKey, endpoint, disableOnDev, metadata, trackSession, fingerprintBrowser]);
 
   // attach click listener
   useEffect(() => {
-    if (!trackClickEvents) return;
+    if (!trackClickEvents || (disableOnDev && process.env.NODE_ENV === 'development')) return;
 
     const handleClick = async (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
@@ -133,11 +136,11 @@ export const useAnalytics = <TResponse>({
     return () => {
       window.removeEventListener('click', handleClick);
     };
-  }, [trackClickEvents]);
+  }, [trackClickEvents, disableOnDev]);
 
   // atach unload listener
   useEffect(() => {
-    if (!trackSession) return;
+    if (!trackSession || (disableOnDev && process.env.NODE_ENV === 'development')) return;
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // @see https://stackoverflow.com/questions/6162188/javascript-browsers-window-close-send-an-ajax-request-or-run-a-script-on-win
@@ -149,7 +152,7 @@ export const useAnalytics = <TResponse>({
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, [disableOnDev, trackSession]);
 
   return { error, isFetching, data };
 };
