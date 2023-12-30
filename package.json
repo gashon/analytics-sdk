@@ -1,6 +1,6 @@
 {
   "name": "@gashon/analytics",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "description": "Analytics Component",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

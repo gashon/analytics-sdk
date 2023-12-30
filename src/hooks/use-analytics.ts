@@ -131,7 +131,8 @@ export const useAnalytics = <TResponse>({
       }
     };
 
-    window.addEventListener('click', handleClick);
+    // increase priority during bubbling phase
+    window.addEventListener('click', handleClick, true);
 
     return () => {
       window.removeEventListener('click', handleClick);
