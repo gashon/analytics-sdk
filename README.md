@@ -110,6 +110,7 @@ An object containing:
 type RequestData = {
   payload: RequestPayload;
   checksum: string;
+  disable_notifications: boolean;
   path: string;
   user_id: string | null;
   api_key: AnalyticsProps['apiKey'];

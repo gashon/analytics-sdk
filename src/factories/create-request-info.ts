@@ -7,17 +7,20 @@ export const createRequestInfo = ({
   trackSession,
   apiKey,
   checksum,
+  disableNotifications = false,
   options = {},
 }: {
   payload: RequestPayload;
   trackSession: FetchData['trackSession'];
   apiKey: FetchData['apiKey'];
   checksum: string;
+  disableNotifications?: boolean;
   options?: RequestInit;
 }): RequestInit => {
   const data: RequestData = {
     payload,
     checksum,
+    disable_notifications: disableNotifications,
     path: window.location.pathname,
     api_key: apiKey,
     token: getUserToken(),

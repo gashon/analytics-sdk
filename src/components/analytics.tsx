@@ -10,6 +10,7 @@ export interface AnalyticsProps {
   trackSession?: boolean;
   fingerprintBrowser?: boolean;
   trackClickEvents?: boolean;
+  disableNotifications?: boolean;
   disableOnDev?: boolean;
 }
 
@@ -21,6 +22,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
   trackClickEvents,
   fingerprintBrowser,
   debug = false,
+  disableNotifications = false,
   disableOnDev = false,
 }) => {
   const { data, error, isFetching } = useAnalytics<any>({
@@ -30,6 +32,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
     trackSession,
     trackClickEvents,
     fingerprintBrowser,
+    disableNotifications,
     disableOnDev,
   });
 

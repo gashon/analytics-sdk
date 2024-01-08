@@ -35,8 +35,9 @@ const sendRequest = async <T>({
   checksum,
   apiKey,
   trackSession,
+  disableNotifications = false,
 }: RequestDataInit & { endpoint: AnalyticsProps['endpoint'] }): Promise<T> => {
-  const options = createRequestInfo({ payload, trackSession, apiKey, checksum });
+  const options = createRequestInfo({ disableNotifications, payload, trackSession, apiKey, checksum });
 
   const res = await fetch(endpoint, options);
   return res.json();
@@ -49,12 +50,24 @@ const fetchPageVisit = async ({
   trackSession,
   fingerprintBrowser,
   sessionId,
+  disableNotifications,
 }: FetchData) => {
-  const { payload, checksum } = await createPageVisitPayload({ metadata, fingerprintBrowser, sessionId });
+  const { payload, checksum } = await createPageVisitPayload({
+    metadata,
+    fingerprintBrowser,
+    sessionId,
+  });
 
   const {
     data: { token },
-  } = await sendRequest<PageVisitExpectedResponse>({ endpoint, payload, trackSession, apiKey, checksum });
+  } = await sendRequest<PageVisitExpectedResponse>({
+    disableNotifications,
+    endpoint,
+    payload,
+    trackSession,
+    apiKey,
+    checksum,
+  });
 
   if (token) {
     localStorage.setItem(STORAGE_USER_IDENTIFIER, token);
@@ -63,10 +76,10 @@ const fetchPageVisit = async ({
   return true;
 };
 
-const fetchPageLeave = async ({ apiKey, endpoint, trackSession, sessionId }: FetchData) => {
+const fetchPageLeave = async ({ disableNotifications, apiKey, endpoint, trackSession, sessionId }: FetchData) => {
   const { payload, checksum } = createPageLeavePayload({ sessionId });
 
-  sendRequest({ endpoint, payload, trackSession, apiKey, checksum });
+  sendRequest({ endpoint, payload, trackSession, apiKey, checksum, disableNotifications });
   return true;
 };
 
@@ -77,10 +90,11 @@ const fetchClickEvent = async ({
   endpoint,
   trackSession,
   sessionId,
+  disableNotifications,
 }: FetchData & { element: HTMLElement }) => {
   const { payload, checksum } = createClickEventPayload({ sessionId, element, metadata });
 
-  sendRequest({ endpoint, payload, trackSession, apiKey, checksum });
+  sendRequest({ disableNotifications, endpoint, payload, trackSession, apiKey, checksum });
   return true;
 };
 
@@ -91,6 +105,7 @@ export const useAnalytics = <TResponse>({
   trackClickEvents = false,
   trackSession = true,
   fingerprintBrowser = true,
+  disableNotifications,
   disableOnDev,
 }: Omit<FetchData, 'sessionId'>): UseAnalytics<TResponse> => {
   const [error, setError] = useState<UseAnalytics<TResponse>['error']>(null);
@@ -104,7 +119,7 @@ export const useAnalytics = <TResponse>({
 
     setFetching(true);
 
-    fetchPageVisit({ apiKey, endpoint, metadata, trackSession, fingerprintBrowser, sessionId })
+    fetchPageVisit({ disableNotifications, apiKey, endpoint, metadata, trackSession, fingerprintBrowser, sessionId })
       .then((data) => {
         setData(data);
       })
@@ -125,7 +140,7 @@ export const useAnalytics = <TResponse>({
       const { element } = findTrackedElement(clickedElement);
 
       if (element && element.dataset.trackingLabel) {
-        fetchClickEvent({ metadata, apiKey, element, endpoint, sessionId });
+        fetchClickEvent({ disableNotifications, metadata, apiKey, element, endpoint, sessionId });
       } else {
         console.error('[Analytics]: Missing data-tracking-label on parent element');
       }
@@ -145,7 +160,8 @@ export const useAnalytics = <TResponse>({
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // @see https://stackoverflow.com/questions/6162188/javascript-browsers-window-close-send-an-ajax-request-or-run-a-script-on-win
-      if (document.visibilityState === 'hidden') fetchPageLeave({ apiKey, endpoint, trackSession, sessionId });
+      if (document.visibilityState === 'hidden')
+        fetchPageLeave({ apiKey, endpoint, trackSession, sessionId, disableNotifications });
     };
 
     window.addEventListener('visibilitychange', handleBeforeUnload);

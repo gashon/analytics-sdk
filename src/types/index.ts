@@ -47,14 +47,16 @@ export type RequestPayload = ClickEventPayload | PageVisitPayload | PageLeavePay
 export type RequestData = {
   payload: RequestPayload;
   checksum: string;
+  disable_notifications: boolean;
   path: string;
   token: string | null;
   api_key: AnalyticsProps['apiKey'];
 };
 
-export type RequestDataInit = Omit<RequestData, 'token' | 'path' | 'api_key'> & {
+export type RequestDataInit = Omit<RequestData, 'token' | 'path' | 'api_key' | 'disable_notifications'> & {
   apiKey: RequestData['api_key'];
   trackSession: AnalyticsProps['trackSession'];
+  disableNotifications?: AnalyticsProps['disableNotifications'];
 };
 
 type Response<T> = {
