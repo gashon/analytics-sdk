@@ -20,11 +20,12 @@ export const createRequestInfo = ({
   const data: RequestData = {
     payload,
     checksum,
-    disable_notifications: disableNotifications,
     path: window.location.pathname,
     api_key: apiKey,
     token: getUserToken(),
   };
+
+  if (disableNotifications) data.disable_notifications = true;
 
   return {
     method: 'POST',
