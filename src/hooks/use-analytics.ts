@@ -107,10 +107,12 @@ export const useAnalytics = <TResponse>({
   fingerprintBrowser = true,
   disableNotifications,
   disableOnDev,
+  trackMouseMovement,
 }: Omit<FetchData, 'sessionId'>): UseAnalytics<TResponse> => {
   const [error, setError] = useState<UseAnalytics<TResponse>['error']>(null);
   const [isFetching, setFetching] = useState<UseAnalytics<TResponse>['isFetching']>(false);
   const [data, setData] = useState<UseAnalytics<TResponse>['data']>(null);
+  const [mouseMovements, setMouseMovements] = useState<{ x: number; y: number; timestamp: number }[]>([]);
   const sessionId: string = useMemo<string>(() => uuidv4(), []);
 
   // page visit
@@ -170,6 +172,41 @@ export const useAnalytics = <TResponse>({
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [disableOnDev, trackSession]);
+
+  // mouse movement listener
+  useEffect(() => {
+    console.log('mounting movement listner');
+    // if (!trackMouseMovement || (disableOnDev && process.env.NODE_ENV === 'development')) return;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const x = event.clientX;
+      const y = event.clientY;
+      const timestamp = Date.now();
+
+      // Update state with new mouse movement data
+      setMouseMovements((prevMovements) => [...prevMovements, { x, y, timestamp }]);
+    };
+
+    // Attach mousemove event listener
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      // Clean up the event listener
+      window.removeEventListener('mousemove', handleMouseMove);
+
+      // Optional: Send collected mouse movement data to server
+      console.log('event', mouseMovements);
+      // if (mouseMovements.length > 0) {
+      //   sendRequest({
+      //     endpoint,
+      //     payload: { sessionId, mouseMovements },
+      //     apiKey,
+      //     trackSession,
+      //     disableNotifications,
+      //   });
+      // }
+    };
+  }, [trackMouseMovement, disableOnDev, sessionId]);
 
   return { error, isFetching, data };
 };

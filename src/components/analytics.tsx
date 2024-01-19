@@ -12,6 +12,7 @@ export interface AnalyticsProps {
   trackClickEvents?: boolean;
   disableNotifications?: boolean;
   disableOnDev?: boolean;
+  trackMouseMovement?: boolean;
 }
 
 export const Analytics: React.FC<AnalyticsProps> = ({
@@ -24,6 +25,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
   debug = false,
   disableNotifications = false,
   disableOnDev = false,
+  trackMouseMovement = false,
 }) => {
   const { data, error, isFetching } = useAnalytics<any>({
     apiKey,
@@ -34,6 +36,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
     fingerprintBrowser,
     disableNotifications,
     disableOnDev,
+    trackMouseMovement,
   });
 
   if (debug) {
