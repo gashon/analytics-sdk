@@ -1,12 +1,13 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { createClickEventPayload, createPageVisitPayload, createRequestBlob, createRequestInfo } from '../factories';
 import { AnalyticsProps } from '../components';
 import { findTrackedElement } from '../util';
 import { createPageLeavePayload } from '../factories/create-page-leave-payload';
-import { PageVisitExpectedResponse, RequestData, RequestDataInit } from '../types';
+import { MouseTrackEvent, PageVisitExpectedResponse, RequestData, RequestDataInit } from '../types';
 import { STORAGE_USER_IDENTIFIER } from '../consts';
+import { createMouseTrackingPayload } from '../factories/create-mouse-track-payload';
 
 export type UseAnalytics<T> = {
   error: Error | null;
@@ -107,12 +108,13 @@ export const useAnalytics = <TResponse>({
   fingerprintBrowser = true,
   disableNotifications,
   disableOnDev,
-  trackMouseMovement,
+  trackMouseMovement = false,
+  mouseMovementSamplingRate = 100,
 }: Omit<FetchData, 'sessionId'>): UseAnalytics<TResponse> => {
   const [error, setError] = useState<UseAnalytics<TResponse>['error']>(null);
   const [isFetching, setFetching] = useState<UseAnalytics<TResponse>['isFetching']>(false);
   const [data, setData] = useState<UseAnalytics<TResponse>['data']>(null);
-  const [mouseMovements, setMouseMovements] = useState<{ x: number; y: number; timestamp: number }[]>([]);
+  const [mouseMovements, setMouseMovements] = useState<MouseTrackEvent[]>([]);
   const sessionId: string = useMemo<string>(() => uuidv4(), []);
 
   // page visit
@@ -175,38 +177,53 @@ export const useAnalytics = <TResponse>({
 
   // mouse movement listener
   useEffect(() => {
-    console.log('mounting movement listner');
-    // if (!trackMouseMovement || (disableOnDev && process.env.NODE_ENV === 'development')) return;
+    if (!trackMouseMovement || (disableOnDev && process.env.NODE_ENV === 'development')) return;
+
+    let lastEventTime = 0;
+
+    const handleSendingMouseEvents = () => {
+      if (document.visibilityState === 'hidden') {
+        if (mouseMovements.length > 0) {
+          const { payload, checksum } = createMouseTrackingPayload({ sessionId, data: mouseMovements });
+
+          sendRequest({
+            endpoint,
+            payload,
+            checksum,
+            apiKey,
+            trackSession,
+            disableNotifications,
+          });
+        }
+      }
+    };
 
     const handleMouseMove = (event: MouseEvent) => {
-      const x = event.clientX;
-      const y = event.clientY;
-      const timestamp = Date.now();
+      const now = Date.now();
+      if (now - lastEventTime > mouseMovementSamplingRate) {
+        const x = event.clientX;
+        const y = event.clientY;
+        const timestamp = now;
 
-      // Update state with new mouse movement data
-      setMouseMovements((prevMovements) => [...prevMovements, { x, y, timestamp }]);
+        const mouseEvent: MouseTrackEvent = {
+          x,
+          y,
+          timestamp,
+        };
+        setMouseMovements((prevMovements) => [...prevMovements, mouseEvent]);
+        lastEventTime = now;
+      }
     };
+    window.addEventListener('visibilitychange', handleSendingMouseEvents);
 
     // Attach mousemove event listener
     window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      // Clean up the event listener
       window.removeEventListener('mousemove', handleMouseMove);
-
-      // Optional: Send collected mouse movement data to server
-      console.log('event', mouseMovements);
-      // if (mouseMovements.length > 0) {
-      //   sendRequest({
-      //     endpoint,
-      //     payload: { sessionId, mouseMovements },
-      //     apiKey,
-      //     trackSession,
-      //     disableNotifications,
-      //   });
-      // }
+      window.removeEventListener('visibilitychange', handleSendingMouseEvents);
     };
-  }, [trackMouseMovement, disableOnDev, sessionId]);
+  }, [trackMouseMovement, mouseMovements, setMouseMovements, mouseMovementSamplingRate, disableOnDev, sessionId]);
 
   return { error, isFetching, data };
 };

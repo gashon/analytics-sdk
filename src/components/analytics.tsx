@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useAnalytics } from '../hooks';
 
-export interface AnalyticsProps {
+export type AnalyticsProps = {
   apiKey: string;
   endpoint: string;
   debug?: boolean;
@@ -12,8 +12,10 @@ export interface AnalyticsProps {
   trackClickEvents?: boolean;
   disableNotifications?: boolean;
   disableOnDev?: boolean;
-  trackMouseMovement?: boolean;
-}
+} & (
+  | { trackMouseMovement: boolean; mouseMovementSamplingRate: number }
+  | { trackMouseMovement?: never; mouseMovementSamplingRate?: number }
+);
 
 export const Analytics: React.FC<AnalyticsProps> = ({
   apiKey,
@@ -26,6 +28,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
   disableNotifications = false,
   disableOnDev = false,
   trackMouseMovement = false,
+  mouseMovementSamplingRate,
 }) => {
   const { data, error, isFetching } = useAnalytics<any>({
     apiKey,
