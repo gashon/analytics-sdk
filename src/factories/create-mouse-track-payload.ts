@@ -15,6 +15,10 @@ export const createMouseTrackingPayload = ({
     event: EVENTS.MOUSE_TRACK,
     request_id: uuidv4(),
     session_id: sessionId,
+    window: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    },
     data,
   });
 

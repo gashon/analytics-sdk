@@ -40,6 +40,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({
     disableNotifications,
     disableOnDev,
     trackMouseMovement,
+    mouseMovementSamplingRate,
   });
 
   if (debug) {

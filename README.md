@@ -155,6 +155,10 @@ export type MouseTrackingPayload = {
   event: 'mouse_track';
   request_id: string;
   session_id: string;
+  window: {
+    width: number;
+    height: number;
+  };
   data: MouseTrackEvent[];
 };
 ```
