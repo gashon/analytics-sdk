@@ -109,12 +109,15 @@ export const useAnalytics = <TResponse>({
   disableNotifications,
   disableOnDev,
   trackMouseMovement = false,
-  mouseMovementSamplingRate = 100,
+  mouseMovementSamplingRate = 1000,
 }: Omit<FetchData, 'sessionId'>): UseAnalytics<TResponse> => {
   const [error, setError] = useState<UseAnalytics<TResponse>['error']>(null);
   const [isFetching, setFetching] = useState<UseAnalytics<TResponse>['isFetching']>(false);
   const [data, setData] = useState<UseAnalytics<TResponse>['data']>(null);
+
   const [mouseMovements, setMouseMovements] = useState<MouseTrackEvent[]>([]);
+  const [lastMouseEvent, setLastMouseEvent] = useState<number>(Date.now());
+
   const sessionId: string = useMemo<string>(() => uuidv4(), []);
 
   // page visit
@@ -179,8 +182,6 @@ export const useAnalytics = <TResponse>({
   useEffect(() => {
     if (!trackMouseMovement || (disableOnDev && process.env.NODE_ENV === 'development')) return;
 
-    let lastEventTime = 0;
-
     const handleSendingMouseEvents = () => {
       if (document.visibilityState === 'hidden') {
         if (mouseMovements.length > 0) {
@@ -200,7 +201,7 @@ export const useAnalytics = <TResponse>({
 
     const handleMouseMove = (event: MouseEvent) => {
       const now = Date.now();
-      if (now - lastEventTime > mouseMovementSamplingRate) {
+      if (now - lastMouseEvent > mouseMovementSamplingRate) {
         const x = event.clientX;
         const y = event.clientY;
         const timestamp = now;
@@ -211,7 +212,7 @@ export const useAnalytics = <TResponse>({
           timestamp,
         };
         setMouseMovements((prevMovements) => [...prevMovements, mouseEvent]);
-        lastEventTime = now;
+        setLastMouseEvent(now);
       }
     };
     window.addEventListener('visibilitychange', handleSendingMouseEvents);
@@ -223,7 +224,16 @@ export const useAnalytics = <TResponse>({
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('visibilitychange', handleSendingMouseEvents);
     };
-  }, [trackMouseMovement, mouseMovements, setMouseMovements, mouseMovementSamplingRate, disableOnDev, sessionId]);
+  }, [
+    lastMouseEvent,
+    setLastMouseEvent,
+    trackMouseMovement,
+    mouseMovements,
+    setMouseMovements,
+    mouseMovementSamplingRate,
+    disableOnDev,
+    sessionId,
+  ]);
 
   return { error, isFetching, data };
 };
