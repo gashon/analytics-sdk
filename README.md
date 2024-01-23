@@ -52,9 +52,9 @@ Props
 `metadata`: Record<\String, String> (optional) - Optional metadata to associate with a request. \
 `trackClickEvents`: Boolean (default false) - Enables click event tracking. \
 `trackSession`: Boolean (default true) - Enables session tracking.\
-`fingerprintBrowser`: Boolean (default true) - Enables browser fingerprinting for unique user identification.
-`disableOnDev`: Boolean (default false) - Disables sending analytics on local development envs.
-`trackMouseEvent`: Boolean (default false) - Attaches a mouse movement listener to track the user's cursor throughout the session. Uses `mouseMovementSamplingRate` to determine tracking interval.
+`fingerprintBrowser`: Boolean (default true) - Enables browser fingerprinting for unique user identification. \
+`disableOnDev`: Boolean (default false) - Disables sending analytics on local development envs. \
+`trackMouseEvent`: Boolean (default false) - Attaches a mouse movement listener to track the user's cursor throughout the session. Uses `mouseMovementSamplingRate` to determine tracking interval. \
 `mouseMovementSamplingRate`: Number - Determines the sampling rate for collecting mouse movement data.
 
 ### 2. useAnalytics Hook
