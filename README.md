@@ -151,6 +151,13 @@ type PageLeavePayload = {
   session_id: string;
 };
 
+type PageResumePayload = {
+  event: 'resume';
+  request_id: string;
+  timestamp: number;
+  session_id: string;
+};
+
 export type MouseTrackingPayload = {
   event: 'mouse_track';
   request_id: string;

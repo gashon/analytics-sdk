@@ -1,7 +1,13 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { createClickEventPayload, createPageVisitPayload, createRequestBlob, createRequestInfo } from '../factories';
+import {
+  createClickEventPayload,
+  createPageResumePayload,
+  createPageVisitPayload,
+  createRequestBlob,
+  createRequestInfo,
+} from '../factories';
 import { AnalyticsProps } from '../components';
 import { findTrackedElement } from '../util';
 import { createPageLeavePayload } from '../factories/create-page-leave-payload';
@@ -74,6 +80,13 @@ const fetchPageVisit = async ({
     localStorage.setItem(STORAGE_USER_IDENTIFIER, token);
   }
 
+  return true;
+};
+
+const fetchPageReturn = async ({ disableNotifications, apiKey, endpoint, trackSession, sessionId }: FetchData) => {
+  const { payload, checksum } = createPageResumePayload({ sessionId });
+
+  sendRequest({ endpoint, payload, trackSession, apiKey, checksum, disableNotifications });
   return true;
 };
 
@@ -169,6 +182,15 @@ export const useAnalytics = <TResponse>({
       // @see https://stackoverflow.com/questions/6162188/javascript-browsers-window-close-send-an-ajax-request-or-run-a-script-on-win
       if (document.visibilityState === 'hidden')
         fetchPageLeave({ apiKey, endpoint, trackSession, sessionId, disableNotifications });
+      else if (document.visibilityState === 'visible') {
+        fetchPageReturn({
+          apiKey,
+          endpoint,
+          sessionId,
+          metadata,
+          disableNotifications,
+        });
+      }
     };
 
     window.addEventListener('visibilitychange', handleBeforeUnload);

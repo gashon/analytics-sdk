@@ -6,6 +6,7 @@ export enum EVENTS {
   VISIT = 'visit',
   LEAVE = 'leave',
   MOUSE_TRACK = 'mouse_track',
+  RESUME = 'resume',
 }
 
 export type ElementRect = {
@@ -43,6 +44,13 @@ export type PageLeavePayload = {
   session_id: string;
 };
 
+export type PageResumePayload = {
+  event: EVENTS.RESUME;
+  request_id: string;
+  timestamp: number;
+  session_id: string;
+};
+
 export type MouseTrackEvent = {
   x: number;
   y: number;
@@ -60,7 +68,12 @@ export type MouseTrackingPayload = {
   data: MouseTrackEvent[];
 };
 
-export type RequestPayload = ClickEventPayload | PageVisitPayload | PageLeavePayload | MouseTrackingPayload;
+export type RequestPayload =
+  | ClickEventPayload
+  | PageVisitPayload
+  | PageLeavePayload
+  | MouseTrackingPayload
+  | PageResumePayload;
 
 export type RequestData = {
   payload: RequestPayload;
